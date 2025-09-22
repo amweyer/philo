@@ -6,7 +6,7 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:31:18 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/22 15:57:28 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:33:22 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,25 @@
 
 int	init_data(int ac, char **av, t_data *data)
 {
-	parse(ac, av, data);
-	init_mutex(&data->dead_lock);
-	init_mutex(&data->meal_lock);
-	init_mutex(&data->write_lock);
-	init_forks(data);
-	init_philos(data);
+	if (parse(ac, av, data))
+		return (1);
+	if (init_mutex(&data->dead_lock))
+		return (1);
+	if (init_mutex(&data->meal_lock))
+		return (1);
+	if (init_mutex(&data->write_lock))
+		return (1);
+	if (init_forks(data))
+		return (1);
+	if (init_philos(data))
+		return (1);
 	return (0);
 }
 
-void	parse(int ac, char **av, t_data *data)
+int	parse(int ac, char **av, t_data *data)
 {
-	validate_args(ac, av);
+	if (validate_args(ac, av))
+		return (1);
 	data->num_of_philos = ft_atoi(av[1]);
 	data->time_to_die = ft_atoi(av[2]);
 	data->time_to_eat = ft_atoi(av[3]);
@@ -35,28 +42,42 @@ void	parse(int ac, char **av, t_data *data)
 	else
 		data->num_times_to_eat = -1;
 	data->dead_flag = false;
+	return (0);
 }
 
-void	validate_args(int ac, char **av)
+int	validate_args(int ac, char **av)
 {
 	if (ac != 5 && ac != 6)
-		exit_error("./philo num_phil t_die t_eat t_sleep [num_times_eat]\n");
+	{
+		printf("./philo num_phil t_die t_eat t_sleep [num_times_eat]\n");
+		return (1);
+	}
 	if (ft_atoi(av[1]) < 1 || ft_atoi(av[1]) > MAX_PHILO)
-		exit_error("Invalid number of philosophers\n");
+	{
+		printf("Invalid number of philosophers\n");
+		return (1);
+	}
 	if (ft_atoi(av[2]) < 1 || ft_atoi(av[3]) < 1 || ft_atoi(av[4]) < 1)
-		exit_error("Times must be positive integers\n");
+	{
+		printf("Times must be positive integers\n");
+		return (1);
+	}
 	if (ac == 6 && ft_atoi(av[5]) < 0)
-		exit_error("num_times_to_eat must be >= 0\n");
+	{
+		printf("num_times_to_eat must be >= 0\n");
+		return (1);
+	}
+	return (0);
 }
 
-void	init_philos(t_data *data)
+int	init_philos(t_data *data)
 {
 	int	i;
 
 	i = 0;
 	data->philos = malloc((data->num_of_philos + 1) * sizeof(t_philo));
 	if (!data->philos)
-		exit_error("Philos allocation failed\n");
+		return (printf("Philos allocation failed\n"), 1);
 	while (i < data->num_of_philos)
 	{
 		data->philos[i].id = i + 1;
@@ -75,19 +96,24 @@ void	init_philos(t_data *data)
 		data->philos[i].time_to_sleep = data->time_to_sleep;
 		i++;
 	}
+	return (0);
 }
 
-void	init_forks(t_data *data)
+int	init_forks(t_data *data)
 {
 	int	i;
 
 	i = 0;
 	data->forks = malloc((data->num_of_philos) * sizeof(pthread_mutex_t));
 	if (!data->forks)
-		free_error(data, "Forks allocation failed\n");
+	{
+		clean_error(data, "Forks allocation failed\n");
+		return (1);
+	}
 	while (i < data->num_of_philos)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
 		i++;
 	}
+	return (0);
 }

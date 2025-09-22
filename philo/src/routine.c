@@ -6,13 +6,13 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 18:04:07 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/22 15:59:14 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/22 19:39:19 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	threads_routine(t_data *data)
+int	threads_routine(t_data *data)
 {
 	int			i;
 	int			j;
@@ -24,18 +24,18 @@ void	threads_routine(t_data *data)
 	{
 		if (pthread_create(&data->philos[i].thread, NULL, philo_routine,
 				(void *)&data->philos[i]) != 0)
-			free_error(data, "Error with the thread creation");
+			return (clean_error(data, "Error with the thread creation"), 1);
 		i++;
 	}
 	if (pthread_create(&monitor, NULL, monitor_routine, data) != 0)
-		free_error(data, "Error with the thread creation");
+		return (clean_error(data, "Error with the thread creation"), 1);
 	while (j < data->num_of_philos)
 	{
 		pthread_join(data->philos[j].thread, NULL);
 		j++;
 	}
 	pthread_join(monitor, NULL);
-	return ;
+	return (0);
 }
 
 void	*philo_routine(void *input)
@@ -43,6 +43,12 @@ void	*philo_routine(void *input)
 	t_philo	*philo;
 
 	philo = (t_philo *)input;
+
+	if(philo->id % 2 == 0)
+	{
+		usleep(0.75 * philo->time_to_eat*1000);
+	}
+	
 	while (!check_dead(philo))
 	{
 		if (eat(philo))
@@ -78,7 +84,7 @@ void	*monitor_routine(void *input)
 			printf("All the philo have eaten. Simulation is finished\n");
 			return (NULL);
 		}
-		usleep(100);
+		usleep(50);
 	}
 }
 

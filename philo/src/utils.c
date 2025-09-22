@@ -6,7 +6,7 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:33:27 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/22 15:59:03 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/22 19:33:21 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,27 +43,46 @@ int	ft_atoi(char *arg)
 
 size_t	get_current_time(void)
 {
-	struct timeval	time;
+	struct timeval			time;
+	static struct timeval	start_time;
+	static bool				start_flag = 0;
 
 	if (gettimeofday(&time, NULL) == -1)
 		printf("error\n gettimeofday()\n");
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+	if (!start_flag)
+	{
+		start_flag = true;
+		start_time.tv_sec = time.tv_sec;
+		start_time.tv_usec = time.tv_usec;
+	}
+	return ((time.tv_sec - start_time.tv_sec) * 1000 + (time.tv_usec
+			- start_time.tv_usec) / 1000);
 }
 
-void	init_mutex(pthread_mutex_t *mutex)
+int	init_mutex(pthread_mutex_t *mutex)
 {
 	if (pthread_mutex_init(mutex, NULL) != 0)
-		exit_error("Failed initialising mutex");
+	{
+		printf("Failed initialising mutex");
+		return (1);
+	}
+	return (0);
 }
 
-void	print_status(t_philo *philo, char *status)
+int	print_status(t_philo *philo, char *status)
 {
 	size_t	timestamp;
 
 	timestamp = get_current_time();
 	pthread_mutex_lock(philo->write_lock);
+	if (check_dead(philo))
+	{
+		pthread_mutex_unlock(philo->write_lock);
+		return (1);
+	}
 	printf("%ld %d %s\n", timestamp, philo->id, status);
 	pthread_mutex_unlock(philo->write_lock);
+	return (0);
 }
 
 bool	check_dead(t_philo *philo)

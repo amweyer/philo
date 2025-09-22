@@ -6,18 +6,11 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 15:04:28 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/19 14:57:20 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:37:54 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	exit_error(char *msg)
-{
-	if (msg)
-		printf("Error: %s\n", msg);
-	exit(EXIT_FAILURE);
-}
 
 void	clean_all(t_data *data)
 {
@@ -38,10 +31,9 @@ void	clean_all(t_data *data)
 	}
 }
 
-void	free_error(t_data *data, char *msg)
+void	clean_error(t_data *data, char *msg)
 {
 	if (msg)
 		printf("Error: %s\n", msg);
 	clean_all(data);
-	exit(EXIT_FAILURE);
 }

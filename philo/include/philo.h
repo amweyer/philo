@@ -6,7 +6,7 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:56:05 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/22 15:56:08 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/22 19:37:27 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 # define INT_MIN -2147483648
 # define INT_MAX 2147483647
-# define MAX_PHILO 200
+# define MAX_PHILO 600
 
 typedef struct s_philo	t_philo;
 
@@ -64,24 +64,23 @@ typedef struct s_philo
 
 /* parsing.c */
 int						init_data(int ac, char **av, t_data *data);
-void					parse(int ac, char **av, t_data *data);
-void					validate_args(int ac, char **av);
-void					init_philos(t_data *data);
-void					init_forks(t_data *data);
+int						parse(int ac, char **av, t_data *data);
+int						validate_args(int ac, char **av);
+int						init_philos(t_data *data);
+int						init_forks(t_data *data);
 
 /* utils.c */
 int						ft_atoi(char *arg);
-void					init_mutex(pthread_mutex_t *mutex);
-void					print_status(t_philo *philo, char *status);
+int						init_mutex(pthread_mutex_t *mutex);
+int						print_status(t_philo *philo, char *status);
 size_t					get_current_time(void);
 
 /* free.c */
-void					exit_error(char *msg);
 void					clean_all(t_data *data);
-void					free_error(t_data *data, char *msg);
+void					clean_error(t_data *data, char *msg);
 
 /* routine.c */
-void					threads_routine(t_data *data);
+int						threads_routine(t_data *data);
 void					*philo_routine(void *input);
 void					*monitor_routine(void *input);
 bool					is_philo_dead(t_data *data);
@@ -93,7 +92,6 @@ int						eat(t_philo *philo);
 int						take_forks(t_philo *philo);
 int						nap(t_philo *philo);
 int						thinking(t_philo *philo);
-void					do_eat(t_philo *philo);
-void					smart_sleep(t_philo *philo, size_t time_to_wait);
+int						do_eat(t_philo *philo);
 
 #endif
