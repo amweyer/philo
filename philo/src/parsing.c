@@ -6,7 +6,7 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:31:18 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/17 17:47:30 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/22 15:57:28 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	init_data(int ac, char **av, t_data *data)
 	init_philos(data);
 	return (0);
 }
+
 void	parse(int ac, char **av, t_data *data)
 {
 	validate_args(ac, av);
@@ -39,7 +40,7 @@ void	parse(int ac, char **av, t_data *data)
 void	validate_args(int ac, char **av)
 {
 	if (ac != 5 && ac != 6)
-		exit_error("Usage: ./philo num_philos t_die t_eat t_sleep [num_times_to_eat]\n");
+		exit_error("./philo num_phil t_die t_eat t_sleep [num_times_eat]\n");
 	if (ft_atoi(av[1]) < 1 || ft_atoi(av[1]) > MAX_PHILO)
 		exit_error("Invalid number of philosophers\n");
 	if (ft_atoi(av[2]) < 1 || ft_atoi(av[3]) < 1 || ft_atoi(av[4]) < 1)

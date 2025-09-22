@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/22 15:56:05 by amweyer           #+#    #+#             */
+/*   Updated: 2025/09/22 15:56:08 by amweyer          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -60,6 +72,7 @@ void					init_forks(t_data *data);
 /* utils.c */
 int						ft_atoi(char *arg);
 void					init_mutex(pthread_mutex_t *mutex);
+void					print_status(t_philo *philo, char *status);
 size_t					get_current_time(void);
 
 /* free.c */
@@ -77,9 +90,10 @@ bool					check_dead(t_philo *philo);
 
 /* routine_utils.c */
 int						eat(t_philo *philo);
+int						take_forks(t_philo *philo);
 int						nap(t_philo *philo);
 int						thinking(t_philo *philo);
-void					print_status(t_philo *philo, char *status);
+void					do_eat(t_philo *philo);
 void					smart_sleep(t_philo *philo, size_t time_to_wait);
 
 #endif

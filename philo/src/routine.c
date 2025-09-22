@@ -6,7 +6,7 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 18:04:07 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/19 18:16:03 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/22 15:59:14 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,6 @@ void	threads_routine(t_data *data)
 	return ;
 }
 
-bool	check_dead(t_philo *philo)
-{
-	pthread_mutex_lock(philo->dead_lock);
-	if (*(philo->dead))
-	{
-		pthread_mutex_unlock(philo->dead_lock);
-		// perror("TRUE ");
-		// printf("id: %d\n", philo->id);
-		return (true);
-	}
-	pthread_mutex_unlock(philo->dead_lock);
-	return (false);
-}
-
 void	*philo_routine(void *input)
 {
 	t_philo	*philo;
@@ -63,7 +49,7 @@ void	*philo_routine(void *input)
 			break ;
 		if (nap(philo))
 			break ;
-		if (check_dead(philo))
+		if (thinking(philo))
 			break ;
 		usleep(100);
 	}
@@ -75,10 +61,8 @@ void	*monitor_routine(void *input)
 	t_data	*data;
 
 	data = (t_data *)input;
-	printf("data->dead_flag: %d\n", data->dead_flag);
 	while (1)
 	{
-		printf("data->dead_flag: %d\n", data->dead_flag);
 		if (is_philo_dead(data))
 		{
 			pthread_mutex_lock(&data->dead_lock);

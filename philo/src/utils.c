@@ -6,7 +6,7 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:33:27 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/05 18:09:07 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/22 15:59:03 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	ft_atoi(char *arg)
 {
-	int i;
-	long nb;
+	int		i;
+	long	nb;
 
 	i = 0;
 	nb = 0;
@@ -41,7 +41,6 @@ int	ft_atoi(char *arg)
 	return ((int)nb);
 }
 
-
 size_t	get_current_time(void)
 {
 	struct timeval	time;
@@ -55,4 +54,26 @@ void	init_mutex(pthread_mutex_t *mutex)
 {
 	if (pthread_mutex_init(mutex, NULL) != 0)
 		exit_error("Failed initialising mutex");
+}
+
+void	print_status(t_philo *philo, char *status)
+{
+	size_t	timestamp;
+
+	timestamp = get_current_time();
+	pthread_mutex_lock(philo->write_lock);
+	printf("%ld %d %s\n", timestamp, philo->id, status);
+	pthread_mutex_unlock(philo->write_lock);
+}
+
+bool	check_dead(t_philo *philo)
+{
+	pthread_mutex_lock(philo->dead_lock);
+	if (*(philo->dead))
+	{
+		pthread_mutex_unlock(philo->dead_lock);
+		return (true);
+	}
+	pthread_mutex_unlock(philo->dead_lock);
+	return (false);
 }
