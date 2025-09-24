@@ -6,7 +6,7 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:56:05 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/22 19:37:27 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/24 11:59:52 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 # define INT_MIN -2147483648
 # define INT_MAX 2147483647
-# define MAX_PHILO 600
+# define MAX_PHILO 200
 
 typedef struct s_philo	t_philo;
 
@@ -73,6 +73,7 @@ int						init_forks(t_data *data);
 int						ft_atoi(char *arg);
 int						init_mutex(pthread_mutex_t *mutex);
 int						print_status(t_philo *philo, char *status);
+bool					check_dead(t_philo *philo);
 size_t					get_current_time(void);
 
 /* free.c */
@@ -83,15 +84,19 @@ void					clean_error(t_data *data, char *msg);
 int						threads_routine(t_data *data);
 void					*philo_routine(void *input);
 void					*monitor_routine(void *input);
-bool					is_philo_dead(t_data *data);
-bool					have_philos_finish(t_data *data);
-bool					check_dead(t_philo *philo);
+void					*philo_solo_routine(void *input);
+int						choose_routine(t_data *data);
 
 /* routine_utils.c */
 int						eat(t_philo *philo);
-int						take_forks(t_philo *philo);
 int						nap(t_philo *philo);
 int						thinking(t_philo *philo);
+// int						myusleep(t_philo *philo, int time);
+bool					is_philo_dead(t_data *data);
+
+/* eat_utils.c */
+int						take_forks(t_philo *philo);
 int						do_eat(t_philo *philo);
+bool					have_philos_finish(t_data *data);
 
 #endif

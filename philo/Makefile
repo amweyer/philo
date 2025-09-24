@@ -6,7 +6,7 @@
 #    By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/29 15:01:22 by amweyer           #+#    #+#              #
-#    Updated: 2025/09/22 15:20:15 by amweyer          ###   ########.fr        #
+#    Updated: 2025/09/23 12:52:03 by amweyer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRC =  $(SRC_DIR)/main.c \
        $(SRC_DIR)/utils.c \
        $(SRC_DIR)/routine.c \
        $(SRC_DIR)/routine_utils.c \
-#        $(SRC_DIR)/pipe.c \
+       $(SRC_DIR)/eat_utils.c \
 #        $(SRC_DIR)/pipe_utils.c \
 #        $(SRC_DIR)/pipe_init.c \
 #        $(SRC_DIR)/get_next_line_utils_bonus.c \

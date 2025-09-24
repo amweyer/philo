@@ -366,7 +366,7 @@ if [ "$2" -eq 1 -o "$2" -eq 0 ];then
 
 	echo -e "\n\t\t${green}[============[ Death Checks ]==============]${reset}\n"
 
-	# test_philosopher_death "$target" "$1" "1" "800" "200" "200" "1"
+	test_philosopher_death "$target" "$1" "1" "800" "200" "200" "1"
 	test_philosopher_death "$target" "$1" "4" "310" "200" "100" "2"
 	test_philosopher_death "$target" "$1" "4" "200" "205" "200" "3"
 	test_philosopher_death "$target" "$1" "5" "599" "200" "200" "4"
