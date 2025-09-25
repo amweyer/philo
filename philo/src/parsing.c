@@ -6,7 +6,7 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:31:18 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/24 18:24:20 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:11:41 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,14 @@ int	init_philos(t_data *data)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	data->philos = malloc((data->num_of_philos + 1) * sizeof(t_philo));
 	if (!data->philos)
 		return (printf("Philos allocation failed\n"), 1);
-	while (i < data->num_of_philos)
+	while (++i < data->num_of_philos)
 	{
 		data->philos[i].id = i + 1;
+		data->philos[i].num_of_philos = data->num_of_philos;
 		data->philos[i].eating = 0;
 		data->philos[i].meals_eaten = 0;
 		data->philos[i].dead = &data->dead_flag;
@@ -94,7 +95,6 @@ int	init_philos(t_data *data)
 		data->philos[i].time_to_die = data->time_to_die;
 		data->philos[i].time_to_eat = data->time_to_eat;
 		data->philos[i].time_to_sleep = data->time_to_sleep;
-		i++;
 	}
 	return (0);
 }

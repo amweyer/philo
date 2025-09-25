@@ -6,7 +6,7 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 18:04:07 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/24 21:24:12 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:16:42 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	threads_routine(t_data *data)
 	if (data->num_of_philos != 1)
 	{
 		if (pthread_create(&monitor, NULL, monitor_routine, data) != 0)
-			return (clean_error(data, "Error with the thread creation"), 1);	
+			return (clean_error(data, "Error with the thread creation"), 1);
 	}
 	while (j < data->num_of_philos)
 	{
@@ -65,7 +65,6 @@ void	*philo_routine(void *input)
 
 	philo = (t_philo *)input;
 	if (philo->id % 2 == 1)
-		// myusleep(philo,0.75 * philo->time_to_eat * 1000);
 		usleep(0.75 * philo->time_to_eat * 1000);
 	while (!check_dead(philo))
 	{
@@ -87,15 +86,7 @@ void	*monitor_routine(void *input)
 	while (1)
 	{
 		if (is_philo_dead(data))
-		{
-			// pthread_mutex_lock(&data->dead_lock);
-			// data->dead_flag = true;
-			// pthread_mutex_lock(&data->write_lock);
-			// printf("J'AI MIT A UN DEAD FLAG\n");
-			// pthread_mutex_unlock(&data->write_lock);
-			// pthread_mutex_unlock(&data->dead_lock);
 			return (NULL);
-		}
 		if (data->num_times_to_eat != -1 && have_philos_finish(data))
 		{
 			pthread_mutex_lock(&data->dead_lock);
@@ -103,7 +94,7 @@ void	*monitor_routine(void *input)
 			pthread_mutex_unlock(&data->dead_lock);
 			return (NULL);
 		}
-		usleep(1000);
+		usleep(100);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 12:52:29 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/24 21:43:32 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:16:19 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,16 @@ int	nap(t_philo *philo)
 
 int	thinking(t_philo *philo)
 {
-	// int	time2think;
+	size_t	time2think;
 
 	if (check_dead(philo))
 		return (1);
-	// time2think = (philo->time_to_die - philo->time_to_eat
-	// 		- philo->time_to_sleep) / 2;
+	time2think = (philo->time_to_die - philo->time_to_eat
+			- philo->time_to_sleep) / 2;
 	if (print_status(philo, "is thinking"))
 		return (1);
-	// if (time2think < 0)
-	// time2think = 60;
-	
-	// usleep(5000);
+	if (philo->num_of_philos % 2 == 1)
+		usleep(1000 * (time2think));
 	return (0);
 }
 
@@ -72,11 +70,6 @@ int	is_philo_dead(t_data *data)
 	while (i < data->num_of_philos)
 	{
 		pthread_mutex_lock(&data->meal_lock);
-		// (data->philos[i].last_meal != 0 && (data->time_to_eat < data->time_to_die)) && 
-		// pthread_mutex_lock(&data->write_lock);
-		// printf("last meal = %zu | current time = %lu\n", data->philos[i].last_meal, get_current_time());
-		// pthread_mutex_unlock(&data->write_lock);
-
 		if ((get_current_time()
 				- data->philos[i].last_meal) >= data->time_to_die)
 		{
@@ -96,25 +89,15 @@ int	is_philo_dead(t_data *data)
 	return (false);
 }
 
-int	myusleep(t_philo *philo, unsigned long time)
-{
-	// size_t	first_time;
-
-	// time;
-	// first_time = get_current_time();
-	// printf(" first time = %zu\n", first_time);
-	while (1)
-	{
-		// pthread_mutex_lock(philo->write_lock);
-		//printf("firsttime = %zu | current time = %lu\n", first_time, get_current_time());
-		// printf(" time = %lu\n", get_current_time());
-		// pthread_mutex_unlock(philo->write_lock);
-		// sleep(3);
-		if (check_dead(philo))
-			return (1);
-		if (get_current_time() >= time)
-			break;
-		usleep(50);
-	}
-	return (0);
-}
+// int	myusleep(t_philo *philo, unsigned long time)
+// {
+// 	while (1)
+// 	{
+// 		if (check_dead(philo))
+// 			return (1);
+// 		if (get_current_time() >= time)
+// 			break ;
+// 		usleep(50);
+// 	}
+// 	return (0);
+// }

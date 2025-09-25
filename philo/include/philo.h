@@ -6,7 +6,7 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:56:05 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/24 17:13:48 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:22:25 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@
 # define MAX_PHILO 200
 
 typedef struct s_philo	t_philo;
+
+typedef struct s_forks
+{
+	pthread_mutex_t		*first;
+	pthread_mutex_t		*second;
+}						t_forks;
 
 typedef struct s_data
 {
@@ -47,6 +53,7 @@ typedef struct s_philo
 	int					id;
 	int					eating;
 	int					meals_eaten;
+	int					num_of_philos;
 	int					*dead;
 	size_t				last_meal;
 	size_t				start_time;
@@ -73,7 +80,7 @@ int						init_forks(t_data *data);
 int						ft_atoi(char *arg);
 int						init_mutex(pthread_mutex_t *mutex);
 int						print_status(t_philo *philo, char *status);
-int					check_dead(t_philo *philo);
+int						check_dead(t_philo *philo);
 size_t					get_current_time(void);
 
 /* free.c */
