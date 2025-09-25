@@ -6,7 +6,7 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 18:04:07 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/24 11:41:50 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/24 21:24:12 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,18 @@ int	threads_routine(t_data *data)
 	j = 0;
 	if (choose_routine(data))
 		return (clean_error(data, "Error with the thread creation"), 1);
-	if (pthread_create(&monitor, NULL, monitor_routine, data) != 0)
-		return (clean_error(data, "Error with the thread creation"), 1);
+	if (data->num_of_philos != 1)
+	{
+		if (pthread_create(&monitor, NULL, monitor_routine, data) != 0)
+			return (clean_error(data, "Error with the thread creation"), 1);	
+	}
 	while (j < data->num_of_philos)
 	{
 		pthread_join(data->philos[j].thread, NULL);
 		j++;
 	}
-	pthread_join(monitor, NULL);
+	if (data->num_of_philos != 1)
+		pthread_join(monitor, NULL);
 	return (0);
 }
 
@@ -61,6 +65,7 @@ void	*philo_routine(void *input)
 
 	philo = (t_philo *)input;
 	if (philo->id % 2 == 1)
+		// myusleep(philo,0.75 * philo->time_to_eat * 1000);
 		usleep(0.75 * philo->time_to_eat * 1000);
 	while (!check_dead(philo))
 	{
@@ -70,7 +75,6 @@ void	*philo_routine(void *input)
 			break ;
 		if (thinking(philo))
 			break ;
-		usleep(100);
 	}
 	return (NULL);
 }
@@ -84,9 +88,12 @@ void	*monitor_routine(void *input)
 	{
 		if (is_philo_dead(data))
 		{
-			pthread_mutex_lock(&data->dead_lock);
-			data->dead_flag = true;
-			pthread_mutex_unlock(&data->dead_lock);
+			// pthread_mutex_lock(&data->dead_lock);
+			// data->dead_flag = true;
+			// pthread_mutex_lock(&data->write_lock);
+			// printf("J'AI MIT A UN DEAD FLAG\n");
+			// pthread_mutex_unlock(&data->write_lock);
+			// pthread_mutex_unlock(&data->dead_lock);
 			return (NULL);
 		}
 		if (data->num_times_to_eat != -1 && have_philos_finish(data))
@@ -96,7 +103,7 @@ void	*monitor_routine(void *input)
 			pthread_mutex_unlock(&data->dead_lock);
 			return (NULL);
 		}
-		usleep(50);
+		usleep(1000);
 	}
 }
 
@@ -107,6 +114,8 @@ void	*philo_solo_routine(void *input)
 	philo = (t_philo *)input;
 	if (print_status(philo, "has taken a fork"))
 		return (NULL);
-	usleep(1000 * philo->time_to_eat);
+	usleep(1000 * philo->time_to_die);
+	if (print_status(philo, "died"))
+		return (NULL);
 	return (NULL);
 }

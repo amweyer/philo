@@ -6,7 +6,7 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:56:05 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/24 11:59:52 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/24 17:13:48 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_data
 {
 	int					num_of_philos;
 	int					num_times_to_eat;
-	bool				dead_flag;
+	int					dead_flag;
 	pthread_mutex_t		dead_lock;
 	pthread_mutex_t		meal_lock;
 	pthread_mutex_t		write_lock;
@@ -47,7 +47,7 @@ typedef struct s_philo
 	int					id;
 	int					eating;
 	int					meals_eaten;
-	bool				*dead;
+	int					*dead;
 	size_t				last_meal;
 	size_t				start_time;
 	size_t				time_to_die;
@@ -73,7 +73,7 @@ int						init_forks(t_data *data);
 int						ft_atoi(char *arg);
 int						init_mutex(pthread_mutex_t *mutex);
 int						print_status(t_philo *philo, char *status);
-bool					check_dead(t_philo *philo);
+int					check_dead(t_philo *philo);
 size_t					get_current_time(void);
 
 /* free.c */
@@ -91,12 +91,12 @@ int						choose_routine(t_data *data);
 int						eat(t_philo *philo);
 int						nap(t_philo *philo);
 int						thinking(t_philo *philo);
-// int						myusleep(t_philo *philo, int time);
-bool					is_philo_dead(t_data *data);
+int						myusleep(t_philo *philo, unsigned long time);
+int						is_philo_dead(t_data *data);
 
 /* eat_utils.c */
 int						take_forks(t_philo *philo);
 int						do_eat(t_philo *philo);
-bool					have_philos_finish(t_data *data);
+int						have_philos_finish(t_data *data);
 
 #endif
