@@ -6,7 +6,7 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:56:05 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/25 15:22:25 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/25 18:19:01 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,6 @@
 # define MAX_PHILO 200
 
 typedef struct s_philo	t_philo;
-
-typedef struct s_forks
-{
-	pthread_mutex_t		*first;
-	pthread_mutex_t		*second;
-}						t_forks;
 
 typedef struct s_data
 {

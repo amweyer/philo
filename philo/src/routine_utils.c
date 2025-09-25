@@ -6,7 +6,7 @@
 /*   By: amweyer <amweyer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 12:52:29 by amweyer           #+#    #+#             */
-/*   Updated: 2025/09/25 15:16:19 by amweyer          ###   ########.fr       */
+/*   Updated: 2025/09/25 18:16:20 by amweyer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,7 @@ int	eat(t_philo *philo)
 	if (take_forks(philo))
 		return (1);
 	if (check_dead(philo))
-	{
-		if (philo->id % 2 == 0)
-		{
-			pthread_mutex_unlock(philo->l_fork);
-			pthread_mutex_unlock(philo->r_fork);
-		}
-		else
-		{
-			pthread_mutex_unlock(philo->r_fork);
-			pthread_mutex_unlock(philo->l_fork);
-		}
-		return (1);
-	}
+		return (unlock_forks(philo), 1);
 	if (do_eat(philo))
 		return (1);
 	return (0);
@@ -88,16 +76,3 @@ int	is_philo_dead(t_data *data)
 	}
 	return (false);
 }
-
-// int	myusleep(t_philo *philo, unsigned long time)
-// {
-// 	while (1)
-// 	{
-// 		if (check_dead(philo))
-// 			return (1);
-// 		if (get_current_time() >= time)
-// 			break ;
-// 		usleep(50);
-// 	}
-// 	return (0);
-// }
